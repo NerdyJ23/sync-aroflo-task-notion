@@ -1,3 +1,7 @@
+#Environment files
+.env
+cookie_env
+
 # Logs
 logs
 *.log

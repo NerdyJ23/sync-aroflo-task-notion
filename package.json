@@ -1,0 +1,24 @@
+{
+	"name": "notion-aroflo-integration",
+	"type": "module",
+	"version": "1.0.0",
+	"description": "Gets task status linked to notion database value and syncs it",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"sync": "forever start -o logfile.log -e err.log index.js"
+	},
+	"keywords": [],
+	"author": "Jessica Moolenschot",
+	"license": "MIT",
+	"dependencies": {
+		"@notionhq/client": "^1.0.1",
+		"axios": "^1.4.0",
+		"dotenv": "^16.0.3",
+		"form-data": "^4.0.0",
+		"inquirer": "^9.2.0",
+		"node-fetch": "^3.3.1",
+		"node-html-parser": "^6.1.5",
+		"readline-promise": "^1.0.5"
+	}
+}
