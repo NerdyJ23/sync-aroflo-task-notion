@@ -1,9 +1,7 @@
 import aroflo from "./lib/aroflo-api.js";
 import notion from "./lib/notion-api.js";
 
-const loggedIn = await aroflo.login();
-
-if (loggedIn) {
+if (await aroflo.login()) {
 	const databaseItems = await notion.getRows();
 
 	for (const row of databaseItems.results) {
