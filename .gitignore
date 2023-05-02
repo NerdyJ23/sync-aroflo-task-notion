@@ -1,6 +1,6 @@
 #Environment files
 .env
-lib/cookie_env
+cookie_env
 
 # Logs
 logs
