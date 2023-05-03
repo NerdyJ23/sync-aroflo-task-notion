@@ -15,6 +15,8 @@ Copy the .env_example file to .env and replace the example information with your
 
 Ensure you have 3 database properties that represent Task Status, Task Substatus and Task ID. You will also need a checkbox property called "Archived"
 
+Install node scripts (npm i)
+
 # Running the script
 On your first run of the script (and every 30 days) you will need to enter your AroFlo MFA code to login
 
