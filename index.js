@@ -1,5 +1,7 @@
 import aroflo from "./lib/aroflo-api.js";
 import notion from "./lib/notion-api.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const loggedIn = await aroflo.login();
 
@@ -13,33 +15,48 @@ if (loggedIn) {
 		const task = await aroflo.getTaskById(taskId);
 
 		//Check if option already exists in notion database
-		if (!notion.getPropertyOption({key: "Task Status", value: task.status})) {
-			notion.addPropertyOption({key: "Task Status", value: task.status});
-		}
-		if (!notion.getPropertyOption({key: "Substatus", value: task.substatus.name})) {
-			notion.addPropertyOption({key: "Substatus", value: task.substatus.name});
+		if (!notion.getPropertyOption({key: process.env.TASK_STATUS, value: prettifyTaskStatus(task.status)})) {
+			notion.addPropertyOption({key: process.env.TASK_STATUS, value: prettifyTaskStatus(task.status)});
 		}
 
-		const taskStatus = notion.getPropertyOption({key: "Task Status", value: task.status});
-		const substatus = notion.getPropertyOption({key: "Substatus", value: task.substatus.name});
+		if (!notion.getPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name})) {
+			notion.addPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name});
+		}
+
+		const taskStatus = notion.getPropertyOption({key: process.env.TASK_STATUS, value: prettifyTaskStatus(task.status)});
+		const substatus = notion.getPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name});
 
 		let params = {};
 		if (!taskStatus && !substatus) { continue; }
 
 		if (taskStatus) {
-			params['Task Status'] = {
+			params[process.env.TASK_STATUS] = {
 				select: taskStatus
 			};
+
+			if (task.status === "COMPLETED") {
+				params["Archived"] = {
+					checkbox: true
+				};
+			}
 		}
 		if (substatus) {
-			params['Substatus'] = {
+			params[process.env.TASK_SUBSTATUS] = {
 				select: substatus
 			};
 		}
-
+		console.log(`Updating ${row.properties.Name.title[0].plain_text}`);
 		await notion.updateRow({
 			id: row.id,
 			properties: params
 		});
 	}
+}
+
+function prettifyTaskStatus(name) {
+	let result = "";
+	for (const part of name.split("_")) {
+		result += part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() + " ";
+	}
+	return result.trim();
 }
