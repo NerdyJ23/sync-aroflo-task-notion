@@ -3,6 +3,7 @@ Syncs aroflo task status and substatus to a notion database
 
 # What you will need:
 A notion integration key/app: https://developers.notion.com/docs/create-a-notion-integration
+
 The notion database ID you wish to use for integration
 
 Node.js
