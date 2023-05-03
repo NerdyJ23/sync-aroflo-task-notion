@@ -7,6 +7,7 @@ A notion integration key/app: https://developers.notion.com/docs/create-a-notion
 The notion database ID you wish to use for integration
 
 Node.js
+
 Linux screen application (apt-get install screen)
 
 # Basic setup
