@@ -34,11 +34,9 @@ if (loggedIn) {
 				select: taskStatus
 			};
 
-			if (task.status === "COMPLETED") {
-				params["Archived"] = {
-					checkbox: true
-				};
-			}
+			params["Archived"] = {
+				checkbox: task.status === "COMPLETED"
+			};
 		}
 		if (substatus) {
 			params[process.env.TASK_SUBSTATUS] = {
