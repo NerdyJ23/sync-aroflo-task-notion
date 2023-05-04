@@ -16,18 +16,21 @@ async function run() {
 			if (!taskId) { continue; }
 	
 			const task = await aroflo.getTaskById(taskId);
-	
 			//Check if option already exists in notion database
 			if (!notion.getPropertyOption({key: process.env.TASK_STATUS, value: prettifyTaskStatus(task.status)})) {
 				notion.addPropertyOption({key: process.env.TASK_STATUS, value: prettifyTaskStatus(task.status)});
 			}
-	
-			if (!notion.getPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name})) {
-				notion.addPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name});
+
+			//Some tasks start with no substatus defined
+			let substatus = null;
+			if (task.substatus) {
+				if (!notion.getPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name})) {
+					notion.addPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name});
+				}
+				substatus = notion.getPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name});
 			}
 	
 			const taskStatus = notion.getPropertyOption({key: process.env.TASK_STATUS, value: prettifyTaskStatus(task.status)});
-			const substatus = notion.getPropertyOption({key: process.env.TASK_SUBSTATUS, value: task.substatus.name});
 	
 			let params = {};
 			if (!taskStatus && !substatus) { continue; }
