@@ -49,7 +49,7 @@ async function run() {
 					select: substatus
 				};
 			}
-			console.log(`Updating ${row.properties.Name.title[0].plain_text}`);
+			console.log(`[${getCurrentTimestamp()}] Updating ${row.properties.Name.title[0].plain_text}`);
 			await notion.updateRow({
 				id: row.id,
 				properties: params
@@ -67,4 +67,9 @@ function prettifyTaskStatus(name) {
 		result += part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() + " ";
 	}
 	return result.trim();
+}
+
+function getCurrentTimestamp() {
+	const today = new Date();
+	return `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}: ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
 }
